@@ -1,34 +1,14 @@
-const nodemailer = require("nodemailer");
+const express = require("express");
+const appRoute = require("./routes/route.js");
 
-const transport = nodemailer.createTransport({
-  host: "sandbox.smtp.mailtrap.io",
-  port: 2525,
-  auth: {
-    user: "",
-    pass: "",
-  },
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(express.json());
+
+/** routes */
+app.use("/api", appRoute);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-function sendEmail() {
-  const mailOptions = {
-    from: {
-      name: "Muhammad Rafiq",
-      address: "rafkhan9323@gmail.com",
-    },
-    to: "user@domain.com",
-    subject: "Email test",
-    text: "Email sent with Node.js using Nodemailer!",
-  };
-
-  transport.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      return console.log(`Error: ${err}`);
-    }
-
-    return console.log(
-      `Email sent successfully. Info: ${JSON.stringify(info)}`
-    );
-  });
-}
-
-sendEmail();
